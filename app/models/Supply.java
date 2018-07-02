@@ -13,23 +13,31 @@ package models;
 import java.util.*;
 
 import play.db.ebean.*;
-import play.data.validation.Constraints.*;
+
 
 import javax.persistence.*;
 
+@Entity
 public class Supply extends Model {
     @Id
+    public Long id;
     public String email;
     public String name;
     public String password;
-    
-    public Supply(String email, String name, String password) {
-      this.email = email;
-      this.name = name;
-      this.password = password;
-    }
 
-    public static Finder<String,Supply> find = new Finder<String,Supply>(
-        String.class, Supply.class
-    ); 
+    public static List<Supply> all() {
+      return find.all();
+    }
+    
+    //public static List<Supply> all() {
+      //  return new ArrayList<Supply>();
+    //}
+  
+    public static void create(Supply supply) {
+      supply.save();
+    }
+    
+    public static Finder<Long,Supply> find = new Finder(
+        Long.class, Supply.class
+    );
 }

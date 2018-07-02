@@ -11,6 +11,8 @@ package controllers;
  */
 
 import models.Supply;
+import play.db.ebean.*;
+import play.data.*;
 import play.*;
 import play.mvc.*;
 
@@ -19,22 +21,37 @@ import views.html.*;
 public class Supplies extends Controller {
 
     public static Result index() {
-        return ok(index.render("INDEX"));
+        //return redirect(routes.Application.Supplies());
+        //return TODO;
+        return ok(("INDEX"));
     }
     
-    public static Result create() {
-        return ok(index.render("CREATE"));
+    public static Result list() {
+        return ok(
+          views.html.index.render(Supply.all(), supplyForm)
+        );
     }
     
-    public static Result show(Long id) {
-        return ok(index.render("SHOW: "+id));
+    public static Result newSupplies() {
+        Form<Supply> filledForm = supplyForm.bindFromRequest();
+        if(filledForm.hasErrors()) {
+          return badRequest(
+            views.html.index.render(Supply.all(), filledForm)
+          );
+        } else {
+          Supply.create(filledForm.get());
+          return redirect(routes.Supplies.list());  
+        }
     }
     
-    public static Result update(Long id) {
-        return ok(index.render("UPDATE: "+id));
-    }
+    static Form<Supply> supplyForm = Form.form(Supply.class);
+
     
-    public static Result delete(Long id) {
-        return ok(index.render("DELETE: "+id));
-    }
+    //public static Result update(Long id) {
+      //  return ok(("UPDATE: "+id));
+    //}
+    
+    //public static Result delete(Long id) {
+      //  return ok(("DELETE: "+id));
+    //}
 }
