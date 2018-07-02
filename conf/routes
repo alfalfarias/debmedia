@@ -7,3 +7,9 @@ GET     /                           controllers.Application.index()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+# SUPPLIES          
+GET     /supplies                  controllers.Supplies.index()
+POST    /supplies                  controllers.Supplies.create()
+PUT    /supplies/:id       controllers.Supplies.update(id: Long)
+DELETE    /supplies/:id       controllers.Supplies.delete(id: Long)
