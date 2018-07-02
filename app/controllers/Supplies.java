@@ -28,7 +28,15 @@ public class Supplies extends Controller {
     
     public static Result list() {
         return ok(
-          views.html.index.render(Supply.all(), supplyForm)
+          views.html.supplies.render()
+          //views.html.index.render(Supply.all(), supplyForm)
+        );
+    }
+
+    public static Result listProducts() {
+        return ok(
+          views.html.products.render()
+          //views.html.index.render(Supply.all(), supplyForm)
         );
     }
     
