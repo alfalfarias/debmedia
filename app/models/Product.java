@@ -10,6 +10,8 @@ package models;
  * @author simon
  */
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.*;
 
 import play.db.ebean.*;
@@ -21,21 +23,18 @@ import javax.persistence.*;
 @Table(name="products")
 public class Product extends Model {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
     public String name;
     public double price;
     
-    @OneToMany(mappedBy = "product", cascade=CascadeType.ALL)
-    public List<ProductSupply> productSupplies = new ArrayList<ProductSupply>();
+    @OneToMany(mappedBy = "product", cascade=CascadeType.ALL)// @JsonBackReference
+    public List<ProductSupply> productSupplies;
 
     public static List<Product> all() {
       return find.all();
     }
     
-    //public static List<Supply> all() {
-      //  return new ArrayList<Supply>();
-    //}
-  
     public static void create(Product product) {
       product.save();
     }

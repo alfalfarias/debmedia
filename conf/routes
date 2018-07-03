@@ -10,6 +10,12 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 # SUPPLIES          
 GET     /supplies                  controllers.Supplies.list()
-POST    /supplies                  controllers.Supplies.newSupplies()
+# POST    /supplies                  controllers.Supplies.newSupplies()
 # PUT    /supplies/:id       controllers.Supplies.update(id: Long)
 # DELETE    /supplies/:id       controllers.Supplies.delete(id: Long)
+
+# PRODUCTS          
+GET     /products                  controllers.Products.list()
+#POST    /products                  controllers.Products.newSupplies()
+# PUT    /products/:id       controllers.Products.update(id: Long)
+# DELETE    /products/:id       controllers.Products.delete(id: Long)
