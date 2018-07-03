@@ -32,6 +32,33 @@ angular.module('app')
         });
     };
 
+    vm.openDelete = function (product) {
+
+    let modalInstance = $uibModal.open({
+      animation: true,
+      ariaLabelledBy: 'modal-title',
+      ariaDescribedBy: 'modal-body',
+      templateUrl: 'confirmodal.html',
+      size: 'md',
+      controller: function(productsService, $uibModalInstance) {
+        let vm = this;
+        vm.item = product;
+
+        vm.delete = function () {
+          productsService.deleteProduct(vm.item.id);
+          $uibModalInstance.close();
+        };
+
+        vm.cancel = function () {
+          $uibModalInstance.close();
+        }
+
+      },
+      controllerAs: 'vm'
+    });
+
+  };
+
 })
 
 .controller('ProModalInstanceCtrl', function ($uibModalInstance, product, productsService, suppliesService) {

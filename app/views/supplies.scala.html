@@ -1,7 +1,7 @@
 @import helper._
 @main("Insumos") {
 	<div class="container-fluid" ng-controller="SuppliesCtrl as vm">
-		<div class="py-5 mx-auto w-75">
+		<div class="py-5 mx-auto w-75" ng-init="vm.loadSupplies()">
 		<h4>Insumos</h4>
 			<div class="mb-4">
 				<button class="btn btn-primary float-right" ng-click="vm.open()"><i class="fas fa-plus-square"></i></button>
@@ -22,7 +22,7 @@
 	    				<td class="w-25">{{item.quantity}}</td>
 	    				<td class="w-25">
 	    					<button class="btn btn-warning" ng-click="vm.open(item)"><i class="text-white fas fa-edit"></i></button>
-	    					<button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+	    					<button class="btn btn-danger" ng-click="vm.openDelete(item, $index)"><i class="fas fa-trash-alt"></i></button>
 	    				</td>
 	    			</tr>
 	    		</tbody>
@@ -49,6 +49,19 @@
         <div class="modal-footer">
             <button class="btn btn-primary" type="button" ng-click="vm.ok()">Guardar</button>
             <button class="btn btn-danger" type="button" ng-click="vm.cancel()">Cancelar</button>
+        </div>
+	</script>
+
+	<script type="text/ng-template" id="confirmodal.html">
+        <div class="modal-header">
+            <h3 class="modal-title text-capitalize" id="modal-title">{{vm.item.name}}</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+        	<h4>¿Realmente quiere borrar este insumo?</h4>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger" type="button" ng-click="vm.delete()">Eliminar</button>
+            <button class="btn btn-default" type="button" ng-click="vm.cancel()">Regresar</button>
         </div>
 	</script>
 }

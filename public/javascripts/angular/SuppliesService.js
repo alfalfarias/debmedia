@@ -33,8 +33,13 @@ angular.module('SuppliesService', [])
    };
 
    this.uploadSupply = function (item) {
-   	console.log(item);
+   	// console.log(item);
    	// return '200 OK';
    }
+
+   this.deleteSupply = function (id) {
+   	// console.log(id);
+   	// return '200 OK';
+   };
 
 });

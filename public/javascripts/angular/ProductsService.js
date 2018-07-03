@@ -56,6 +56,10 @@ angular.module('ProductsService', [])
    this.uploadProduct = function (item) {
    	console.log(item);
    	// return '200 OK';
-   }
+   };
+
+   this.deleteProduct = function (id) {
+   	console.log(id);
+   };
 
 });
