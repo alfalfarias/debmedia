@@ -18,22 +18,25 @@ import play.db.ebean.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name="supplies")
-public class Supply extends Model {
+@Table(name="product_supplies")
+public class ProductSupply extends Model {
     @Id
     public Long id;
     public String name;
     public int quantity;
-
-    public static List<Supply> all() {
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    public Product product; 
+    
+    public static List<ProductSupply> all() {
       return find.all();
     }
   
-    public static void create(Supply supply) {
-      supply.save();
+    public static void create(ProductSupply productSupply) {
+      productSupply.save();
     }
     
-    public static Finder<Long,Supply> find = new Finder(
-        Long.class, Supply.class
+    public static Model.Finder<Long,ProductSupply> find = new Model.Finder(
+        Long.class, ProductSupply.class
     );
 }
