@@ -21,6 +21,7 @@ import javax.persistence.*;
 @Table(name="sale_products")
 public class SaleProduct extends Model {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
     public String name;
     public Double price;

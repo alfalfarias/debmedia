@@ -10,6 +10,26 @@ package controllers;
  * @author simon
  */
 
-public class Products {
-    
+import java.util.HashMap;
+import models.Product;
+import play.libs.Json;
+import play.mvc.Controller;
+import play.mvc.Result;
+
+public class Products extends Controller {
+    public static Result list() {
+        return ok(
+            Json.toJson(Product.all())
+        );
+    }
+        
+    public static Result index() {
+        HashMap<String, Object> result = new HashMap<String, Object>(){
+            {
+                put("str", "String");
+                put("int", 123);
+            }
+        };
+        return ok(Json.toJson(result));
+    }
 }

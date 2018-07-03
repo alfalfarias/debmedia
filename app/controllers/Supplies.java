@@ -11,55 +11,24 @@ package controllers;
  */
 
 import models.Supply;
-import play.db.ebean.*;
-import play.data.*;
-import play.*;
-import play.mvc.*;
-
-import views.html.*;
+import play.libs.Json;
+import play.mvc.Controller;
+import play.mvc.Result;
+import static play.mvc.Results.ok;
 
 public class Supplies extends Controller {
-
-    public static Result index() {
-        //return redirect(routes.Application.Supplies());
-        //return TODO;
-        return ok(("INDEX"));
-    }
     
     public static Result list() {
         return ok(
-          views.html.supplies.render()
-          //views.html.index.render(Supply.all(), supplyForm)
-        );
-    }
-
-    public static Result listProducts() {
-        return ok(
-          views.html.products.render()
-          //views.html.index.render(Supply.all(), supplyForm)
+            Json.toJson(Supply.all())
         );
     }
     
-    public static Result newSupplies() {
-        Form<Supply> filledForm = supplyForm.bindFromRequest();
-        if(filledForm.hasErrors()) {
-          return badRequest(
-            views.html.index.render(Supply.all(), filledForm)
-          );
-        } else {
-          Supply.create(filledForm.get());
-          return redirect(routes.Supplies.list());  
-        }
+    public static Result update(Long id) {
+        return ok(("UPDATE: "+id));
     }
     
-    static Form<Supply> supplyForm = Form.form(Supply.class);
-
-    
-    //public static Result update(Long id) {
-      //  return ok(("UPDATE: "+id));
-    //}
-    
-    //public static Result delete(Long id) {
-      //  return ok(("DELETE: "+id));
-    //}
+    public static Result delete(Long id) {
+        return ok(("DELETE: "+id));
+    }
 }

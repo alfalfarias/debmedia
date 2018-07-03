@@ -21,11 +21,12 @@ import javax.persistence.*;
 @Table(name="product_supplies")
 public class ProductSupply extends Model {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
     public String name;
     public int quantity;
     
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     public Product product; 
     
     public static List<ProductSupply> all() {
