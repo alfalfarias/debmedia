@@ -10,6 +10,8 @@ package models;
  * @author simon
  */
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.*;
 
 import play.db.ebean.*;
@@ -23,7 +25,9 @@ public class ProductSupply extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
+    @Column(nullable=false)
     public String name;
+    @Column(nullable=false)
     public int quantity;
     
     @ManyToOne

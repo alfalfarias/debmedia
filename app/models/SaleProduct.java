@@ -23,7 +23,9 @@ public class SaleProduct extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
+    @Column(nullable=false)
     public String name;
+    @Column(nullable=false)
     public Double price;
     
     @OneToOne(cascade = CascadeType.ALL)

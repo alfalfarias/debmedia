@@ -22,6 +22,7 @@ public class Supplies extends Controller {
     
     public static Result list() {
         ObjectNode result = Json.newObject();
+        result.put("message", "OK");
         result.put("supplies", Json.toJson(Supply.all()));
         return ok(result);
     }

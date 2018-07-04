@@ -12,6 +12,7 @@ package models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.*;
 
 import play.db.ebean.*;
@@ -20,15 +21,17 @@ import play.db.ebean.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name="products")
+@Table(name="products", uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "name"})})
 public class Product extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
+    @Column(nullable=false)
     public String name;
+    @Column(nullable=false)
     public double price;
-    
-    @OneToMany(mappedBy = "product", cascade=CascadeType.ALL)// @JsonBackReference
+    @JsonIgnoreProperties("product")
+    @OneToMany(mappedBy = "product", cascade=CascadeType.ALL)
     public List<ProductSupply> productSupplies;
 
     public static List<Product> all() {
