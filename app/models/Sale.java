@@ -23,8 +23,10 @@ public class Sale extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
+    @Column(nullable=false)
     public String client;
 
+    @Column(nullable=false)
     @OneToOne(cascade=CascadeType.ALL)
     public SaleProduct saleProduct;
     

@@ -5,46 +5,48 @@
 
 create table products (
   id                        bigint not null,
-  name                      varchar(255),
-  price                     double,
+  name                      varchar(255) not null,
+  price                     double not null,
+  constraint uq_products_1 unique (id,name),
   constraint pk_products primary key (id))
 ;
 
 create table product_supplies (
   id                        bigint not null,
-  name                      varchar(255),
-  quantity                  integer,
+  name                      varchar(255) not null,
+  quantity                  integer not null,
   product_id                bigint,
   constraint pk_product_supplies primary key (id))
 ;
 
 create table sales (
   id                        bigint not null,
-  client                    varchar(255),
+  client                    varchar(255) not null,
   sale_product_id           bigint,
   constraint pk_sales primary key (id))
 ;
 
 create table sale_products (
   id                        bigint not null,
-  name                      varchar(255),
-  price                     double,
+  name                      varchar(255) not null,
+  price                     double not null,
   sale_id                   bigint,
   constraint pk_sale_products primary key (id))
 ;
 
 create table sale_product_supplies (
   id                        bigint not null,
-  name                      varchar(255),
-  quantity                  integer,
+  name                      varchar(255) not null,
+  quantity                  integer not null,
   sale_product_id           bigint,
   constraint pk_sale_product_supplies primary key (id))
 ;
 
 create table supplies (
   id                        bigint not null,
-  name                      varchar(255),
-  quantity                  integer,
+  name                      varchar(255) not null,
+  quantity                  integer not null,
+  constraint uq_supplies_1 unique (id,name),
   constraint pk_supplies primary key (id))
 ;
 

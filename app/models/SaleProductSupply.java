@@ -23,7 +23,9 @@ public class SaleProductSupply extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
+    @Column(nullable=false)
     public String name;
+    @Column(nullable=false)
     public int quantity;
     
     @OneToOne(cascade = CascadeType.ALL)

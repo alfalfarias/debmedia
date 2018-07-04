@@ -18,12 +18,14 @@ import play.db.ebean.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name="supplies")
+@Table(name="supplies", uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "name"})})
 public class Supply extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
-    public String name;
+    @Column(nullable=false)
+    public String name;    
+    @Column(nullable=false)
     public int quantity;
 
     public static List<Supply> all() {
