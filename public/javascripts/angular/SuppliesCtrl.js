@@ -6,7 +6,7 @@ angular.module('app')
     vm.loadSupplies = function () {
       suppliesService.loadSupplies()
       .then(function(data) {
-        vm.supplies = data;
+        vm.supplies = data.supplies;
       });
     };
 
@@ -32,8 +32,10 @@ angular.module('app')
           }
         });
 
-        modalInstance.result.then(function (item) {
-          vm.loadSupplies();
+        modalInstance.result.then(function (data) {
+          // if(data === 'created'){
+            vm.loadSupplies();
+          // }
         }, function () {
           // console.log('Modal dismissed at: ' + new Date());
         });
@@ -93,7 +95,7 @@ angular.module('app')
     }else {
       suppliesService.uploadSupply(vm.insumo);
     }
-    $uibModalInstance.close(vm.insumo);
+      $uibModalInstance.close();
   };
 
   vm.cancel = function () {

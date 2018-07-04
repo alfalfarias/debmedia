@@ -1,55 +1,25 @@
 angular.module('ProductsService', [])
 .service('productsService', function($http){
 
-	this.products = [{
-	        "id": 1,
-	        "name": "Producto 1",
-	        "supplies": [{
-	        	"id": 1,
-		        "name": "Insumo 1",
-		        "quantity": 15
-	        },
-	        {
-	        	"id": 2,
-		        "name": "Insumo 2",
-		        "quantity": 13
-	        }],
-	        "price": 3520
-	    },
-	    {
-	        "id": 2,
-	        "name": "Producto 2",
-	        "supplies": [{
-
-	        	"id": 3,
-		        "name": "Insumo 3",
-		        "quantity": 10
-	        }],
-	        "price": 2500
-	    },
-	    {
-	        "id": 3,
-	        "name": "Producto 3",
-	        "supplies": [{
-	        	"id": 3,
-		        "name": "Insumo 3",
-		        "quantity": 10
-	        },
-	        {
-	        	"id": 4,
-		        "name": "Insumo 4",
-		        "quantity": 6
-	        }],
-	        "price": 5000
-	}];
-
+	this.url = 'http://localhost:9000/products';
 
    this.loadProducts = function () {
-   	return this.products;
+   	return $http.get(this.url)
+      .then(function successCallback(response){
+      	return response.data;
+      }, function errorCallback(error){
+      	return error;
+      });
    };
 
-   this.setProduct = function (item) {
-   	console.log(item);
+   this.setProduct = function (data) {
+   	console.log(data);
+   	return $http.post(this.url, data)
+   	  .then(function success(response){
+   	  	return response;
+   	  }, function error(error){
+   	  	return error;
+   	  });
    	// return '201 CREATED';
    };
 
@@ -59,7 +29,12 @@ angular.module('ProductsService', [])
    };
 
    this.deleteProduct = function (id) {
-   	console.log(id);
+   	return $http.delete(this.url+'/'+id)
+      .then(function success(response) {
+         return response;
+      }, function error(error) {
+         return error;
+      });
    };
 
 });
