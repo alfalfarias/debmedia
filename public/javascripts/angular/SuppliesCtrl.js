@@ -4,8 +4,11 @@ angular.module('app')
     let vm = this;
 
     vm.loadSupplies = function () {
-      vm.supplies = suppliesService.loadSupplies();
-    }
+      suppliesService.loadSupplies()
+      .then(function(data) {
+        vm.supplies = data;
+      });
+    };
 
     vm.open = function (supplie) {
 

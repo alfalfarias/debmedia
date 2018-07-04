@@ -24,7 +24,13 @@ angular.module('SuppliesService', [])
 
 
    this.loadSupplies = function() {
-      return this.supplies;
+      return $http.get('http://localhost:9000/supplies')
+      .then(function successCallback(response){
+      	return response.data;
+      }, function errorCallback(error){
+      	console.log(error);
+      	return 'error';
+      });
    };
 
    this.setSupply = function (item) {
