@@ -13,6 +13,7 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Supply;
+import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -34,9 +35,10 @@ public class Supplies extends Controller {
     public static Result save() {
         JsonNode json = request().body().asJson();
         ObjectNode result = Json.newObject();
-        if (json == null){
-            result.put("message", "Expecting Json data");
-            return badRequest(result);
+        
+        Form<Supply> supplyForm = Form.form(Supply.class).bind(request().body().asJson());
+        if(supplyForm.hasErrors()){
+            return badRequest(supplyForm.errorsAsJson());
         }
         Supply supply = (Supply) Json.fromJson(json, Supply.class);
         supply.save();
@@ -73,16 +75,17 @@ public class Supplies extends Controller {
         JsonNode json = request().body().asJson();
         ObjectNode result = Json.newObject();
         Supply supply = Supply.find.byId(id);
-        if (json == null){
-            result.put("message", "Expecting Json data");
-            return badRequest(result);
-        }
         if (supply == null){
             result.put("message", "Supply not found");
             return badRequest(result);
         }
+        Form<Supply> supplyForm = Form.form(Supply.class).bind(request().body().asJson());
+        if(supplyForm.hasErrors()){
+            return badRequest(supplyForm.errorsAsJson());
+        }
         supply.name = json.findPath("name").textValue();
         supply.quantity = json.findPath("quantity").intValue();
+        supply.save();
         result.put("message", "OK");
         result.put("supply", Json.toJson(supply));
         return ok(result);
