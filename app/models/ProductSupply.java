@@ -18,6 +18,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
 @Entity
@@ -25,9 +26,12 @@ import play.db.ebean.Model;
 public class ProductSupply extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Constraints.Required
     public Long id;
     @Column(nullable=false)
+    @Constraints.Required
     public String name;
+    @Constraints.Min(value=1, message = "The supply must be almost 1")
     @Column(nullable=false)
     public int quantity;
     
