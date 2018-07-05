@@ -47,6 +47,11 @@ public class Products extends Controller {
             return badRequest(productForm.errorsAsJson());
         }
         Product product = (Product) Json.fromJson(json, Product.class);
+        Product productTable = Product.find.where().eq("name", product.name).setMaxRows(1).findUnique();
+        if (productTable != null){
+            result.put("message", "The Product '"+product.name+"' already exists");
+            return badRequest(result);
+        }
         try {
             Ebean.beginTransaction(); 
             for (ProductSupply productSupply: product.productSupplies){
@@ -58,6 +63,7 @@ public class Products extends Controller {
                 }
                 productSupply.id = null;
                 productSupply.name = supply.name;
+                productSupply.quantity = supply.quantity;
                 supply.save();
             }
             Ebean.save(product);
@@ -103,19 +109,49 @@ public class Products extends Controller {
     public static Result update(Long id) {
         JsonNode json = request().body().asJson();
         ObjectNode result = Json.newObject();
-        Product product = Product.find.byId(id);
-        if (json == null){
-            result.put("message", "Expecting Json data");
-            return badRequest(result);
+        
+        Form<Product> productForm = Form.form(Product.class).bind(request().body().asJson());
+        if(productForm.hasErrors()){
+            return badRequest(productForm.errorsAsJson());
         }
+        Product product = (Product) Json.fromJson(json, Product.class);
         if (product == null){
-            result.put("message", "product not found");
+            result.put("message", "Product not found");
             return badRequest(result);
         }
-        product.name = json.findPath("name").textValue();
-        product.price = json.findPath("price").doubleValue();
-        result.put("message", "OK");
+        Product productTable = Product.find.where().eq("name", product.name).ne("id",id).setMaxRows(1).findUnique();
+        if (productTable != null){
+            result.put("message", "The Product '"+product.name+"' already exists");
+            return badRequest(result);
+        }
+        
+        try {
+            Ebean.beginTransaction(); 
+            for (ProductSupply productSupply: product.productSupplies){
+                Supply supplyTable = Supply.find.where().eq("name", productSupply.name).setMaxRows(1).findUnique();
+                ProductSupply productSupplyTable = ProductSupply.find.where().eq("name", productSupply.name).setMaxRows(1).findUnique();
+                if (supplyTable == null && productSupplyTable == null){
+                    result.put("message", "The Supply '"+productSupply.name+"' does not exist");
+                    result.withArray("productSupplies").add("The Supply '"+productSupply.name+"' does not exist");
+                    return badRequest(result);
+                }
+                productSupply.id = null;
+            }
+            productTable = Product.find.byId(id);
+            Ebean.delete(productTable);
+            product.id = id;
+            Ebean.save(product);
+            Ebean.commitTransaction();  
+        } catch(OptimisticLockException e){
+            Ebean.rollbackTransaction();
+            Ebean.endTransaction(); 
+            result.put("message", e.getMessage());
+            return badRequest(result);
+        } finally {
+            Ebean.endTransaction();  
+        }
         result.put("product", Json.toJson(product));
+        result.put("message", "OK");
         return ok(result);
     }
     
@@ -128,7 +164,7 @@ public class Products extends Controller {
         ObjectNode result = Json.newObject();
         Product product = Product.find.byId(id);
         if (product == null){
-            result.put("message", "product not found");
+            result.put("message", "Product not found");
             return badRequest(result);
         }
         product.delete();

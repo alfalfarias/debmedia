@@ -12,11 +12,13 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import models.Product;
 import models.Supply;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import static play.mvc.Results.badRequest;
 import static play.mvc.Results.ok;
 
 public class Supplies extends Controller {
@@ -41,6 +43,13 @@ public class Supplies extends Controller {
             return badRequest(supplyForm.errorsAsJson());
         }
         Supply supply = (Supply) Json.fromJson(json, Supply.class);
+        
+        Supply supplyTable = Supply.find.where().eq("name", supply.name).setMaxRows(1).findUnique();
+        if (supplyTable != null){
+            result.put("message", "The Supply name '"+supply.name+"' already exists");
+            return badRequest(result);
+        }
+        
         supply.save();
         result.put("message", "OK");
         result.put("supply", Json.toJson(supply));
@@ -85,7 +94,12 @@ public class Supplies extends Controller {
         }
         supply.name = json.findPath("name").textValue();
         supply.quantity = json.findPath("quantity").intValue();
-        supply.save();
+        Supply supplyTable = Supply.find.where().eq("name", supply.name).ne("id", id).setMaxRows(1).findUnique();
+        if (supplyTable != null){
+            result.put("message", "The Supply name '"+supply.name+"' already exists");
+            return badRequest(result);
+        }
+        supply.update();
         result.put("message", "OK");
         result.put("supply", Json.toJson(supply));
         return ok(result);
