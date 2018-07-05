@@ -12,13 +12,11 @@ package controllers;
 
 import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javax.persistence.OptimisticLockException;
 import models.Product;
 import models.ProductSupply;
 import models.Supply;
-import models.forms.ProductForm;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -54,22 +52,15 @@ public class Products extends Controller {
             for (ProductSupply productSupply: product.productSupplies){
                 Supply supply = Supply.find.byId(productSupply.id);
                 if (supply == null){
-                    result.put("message", "Supply ID "+productSupply.id+" does not exist in stock");
-                    result.withArray("productSupplies").add("Supply ID "+productSupply.id+" does not exist in stock");
-                    return badRequest(result);
-                }
-                if (supply.quantity == 0){
-                    result.put("message", "Not quantity of Supply ID "+productSupply+" in stock");
-                    result.withArray("productSupplies").add("Not quantity of Supply ID "+productSupply+" in stock");
+                    result.put("message", "Supply '"+productSupply.name+"' does not exist in stock");
+                    result.withArray("productSupplies").add("Supply '"+productSupply.name+"' does not exist in stock");
                     return badRequest(result);
                 }
                 productSupply.id = null;
                 productSupply.name = supply.name;
-                productSupply.quantity = 1;
-                supply.quantity -= 1;
                 supply.save();
             }
-            Ebean.save(product); 
+            Ebean.save(product);
             Ebean.commitTransaction();  
         } catch(OptimisticLockException e){
             Ebean.rollbackTransaction();
