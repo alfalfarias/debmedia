@@ -23,4 +23,10 @@ public class Application extends Controller {
         );
     }
 
+    public static Result showSales() {
+        return ok(
+          views.html.sales.render()
+        );
+    }
+
 }

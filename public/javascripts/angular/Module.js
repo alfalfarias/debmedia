@@ -3,5 +3,6 @@ angular.module('app', [
 	'ngAnimate', 
 	'toastr', 
 	'SuppliesService', 
-	'ProductsService'
+	'ProductsService',
+	'SalesService'
 ]);

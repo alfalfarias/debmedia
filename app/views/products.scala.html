@@ -10,10 +10,10 @@
 	        <a class="nav-link" href="http://localhost:9000/suppliesview">Insumos <span class="sr-only">(current)</span></a>
 	      </li>
 	      <li class="nav-item active">
-	        <a class="nav-link" href="http://localhost:9000/productsview">Productos</a>
+	        <a class="nav-link" href>Productos</a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" href="#">Ventas</a>
+	        <a class="nav-link" href="http://localhost:9000/salesview">Ventas</a>
 	      </li>
 	    </ul>
 	  </div>
@@ -38,11 +38,11 @@
 	    		<tbody>
 	    			<tr ng-repeat="item in vm.products">
 	    				<td>{{item.id}}</td>
-	    				<td>{{item.name}}</td>
-	    				<td>
+	    				<td class="text-capitalize">{{item.name}}</td>
+	    				<td class="text-capitalize">
 	    					<span ng-repeat="supply in item.productSupplies">{{supply.name}} <br></span>
 	    				</td>
-	    				<td>{{item.description}}</td>
+	    				<td class="text-capitalize">{{item.description}}</td>
 	    				<td>{{item.price}}</td>
 	    				<td>
 	    					<button class="btn btn-sm btn-warning" ng-click="vm.open(item)"><i class="text-white fas fa-edit"></i></button>
@@ -66,7 +66,7 @@
 			  </div>
 			  <div class="form-group">
 			    <label for="inputSupplies">Insumos</label>
-			    <select id="inputSupplies" name="supplies" ng-options="item as item.name for item in vm.supplies" ng-model="vm.product.productSupplies" ng-multiple="true" multiple class="form-control" required></select>
+			    <select id="inputSupplies" name="supplies" ng-options="item as item.name for item in vm.supplies" ng-model="vm.product.productSupplies" ng-multiple="true" multiple class="form-control text-capitalize" required></select>
 			    <br>
 			    <span>Actuales: <span class="text-capitalize" ng-repeat="item in vm.product.productSupplies">{{item.name}} </span>
 			    </span>
