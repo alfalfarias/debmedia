@@ -11,4 +11,10 @@ public class Application extends Controller {
         return redirect(routes.Supplies.list());
     }
 
+    public static Result showSupplies() {
+    	return ok(
+          views.html.supplies.render()
+        );
+    }
+
 }

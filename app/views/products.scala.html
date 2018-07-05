@@ -1,10 +1,10 @@
 @import helper._
 @main("Productos") {
-	<div class="container-fluid" ng-controller="SuppliesCtrl as vm">
+	<div class="container-fluid" ng-controller="ProductCtrl as vm">
 		<div class="py-5 mx-auto w-75">
 		<h4>Productos</h4>
 			<div class="mb-4">
-				<button class="btn btn-primary float-right" ng-click="vm.open()">Agregar</button>
+				<button class="btn btn-primary float-right" ng-click="vm.open()"><i class="fas fa-plus-square"></i></button>
 			</div>
 	    	<table class="table table-hover table-inverse">
 	    		<thead>
@@ -25,8 +25,8 @@
 	    				</td>
 	    				<td>{{item.price}}</td>
 	    				<td>
-	    					<button class="btn btn-sm btn-warning">Editar</button>
-	    					<button class="btn btn-sm btn-danger">Borrar</button>
+	    					<button class="btn btn-sm btn-warning" ng-click="vm.open(item)"><i class="text-white fas fa-edit"></i></button>
+	    					<button class="btn btn-sm btn-danger" ng-click="vm.openDelete(item)"><i class="fas fa-trash-alt"></i></button>
 	    				</td>
 	    			</tr>
 	    		</tbody>
@@ -41,18 +41,38 @@
         <div class="modal-body" id="modal-body">
         	<form>
 			  <div class="form-group">
-			    <label for="inputName">Nombre del Insumo</label>
-			    <input type="text" ng-model="vm.insumo.name" class="form-control" id="inputName" aria-describedby="inputName" placeholder="Nombre">
+			    <label for="inputName">Nombre del Producto</label>
+			    <input type="text" ng-model="vm.product.name" class="form-control" id="inputName" aria-describedby="inputName" placeholder="Nombre">
 			  </div>
 			  <div class="form-group">
-			    <label for="inputQuantity">Cantidad existente</label>
-			    <input type="number" ng-model="vm.insumo.quantity" class="form-control" id="inputQuantity" placeholder="Cantidad">
+			    <label for="inputSupplies">Insumos</label>
+			    <select id="inputSupplies" ng-options="item as item.name for item in vm.insumos" ng-model="vm.product.supplies" ng-multiple="true" multiple class="form-control"></select>
+			    <br>
+			    <span>Actuales: <span class="text-capitalize" ng-repeat="item in vm.product.supplies">{{item.name}} </span>
+			    </span>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputQuantity">Precio</label>
+			    <input type="number" ng-model="vm.product.price" class="form-control" id="inputQuantity" placeholder="Precio">
 			  </div>
 			</form>
         </div>
         <div class="modal-footer">
             <button class="btn btn-primary" type="button" ng-click="vm.ok()">Guardar</button>
             <button class="btn btn-danger" type="button" ng-click="vm.cancel()">Cancelar</button>
+        </div>
+	</script>
+
+	<script type="text/ng-template" id="confirmodal.html">
+        <div class="modal-header">
+            <h3 class="modal-title text-capitalize" id="modal-title">{{vm.item.name}}</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+        	<h4>¿Realmente quiere borrar este insumo?</h4>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger" type="button" ng-click="vm.delete()">Eliminar</button>
+            <button class="btn btn-default" type="button" ng-click="vm.cancel()">Regresar</button>
         </div>
 	</script>
 }
