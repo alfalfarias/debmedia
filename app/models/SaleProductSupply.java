@@ -32,6 +32,12 @@ public class SaleProductSupply extends Model {
     @Column(nullable=false)
     public int quantity;
     
+    public SaleProductSupply() {}
+    public SaleProductSupply(Long id, String name, int quantity) {
+        this.id = id;
+        this.name = name;
+        this.quantity = quantity;
+    }
     @OneToOne(cascade = CascadeType.ALL)
     public SaleProduct saleProduct; 
 

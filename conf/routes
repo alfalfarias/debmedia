@@ -24,3 +24,10 @@ POST    /products                   controllers.Products.save()
 GET     /products/:id               controllers.Products.retrieve(id: Long)
 PUT     /products/:id               controllers.Products.update(id: Long)
 DELETE  /products/:id               controllers.Products.delete(id: Long)
+
+# SALES          
+GET     /sales                   controllers.Sales.list()
+POST    /sales                   controllers.Sales.save()
+# GET     /sales/:id               controllers.Sales.retrieve(id: Long)
+# PUT     /sales/:id               controllers.Sales.update(id: Long)
+# DELETE  /sales/:id               controllers.Sales.delete(id: Long)

@@ -13,7 +13,7 @@ create table products (
 
 create table product_supplies (
   id                        bigint not null,
-  name                      varchar(255) not null,
+  name                      varchar(500) not null,
   quantity                  integer not null,
   product_id                bigint,
   constraint pk_product_supplies primary key (id))
@@ -29,6 +29,7 @@ create table sales (
 create table sale_products (
   id                        bigint not null,
   name                      varchar(255) not null,
+  description               varchar(255),
   price                     double not null,
   sale_id                   bigint,
   constraint pk_sale_products primary key (id))

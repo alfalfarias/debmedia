@@ -32,9 +32,11 @@ public class Product extends Model {
     public Long id;
     @Column(nullable=false, length=500)
     @Constraints.Required
+    @Constraints.MaxLength(500)
     public String name;
     @Column(nullable=false, length=500)
     @Constraints.Required
+    @Constraints.MaxLength(500)
     public String description;
     @Constraints.Min(value=1, message = "The product cant be free")
     @Column(nullable=false)

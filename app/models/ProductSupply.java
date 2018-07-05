@@ -28,7 +28,7 @@ public class ProductSupply extends Model {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Constraints.Required
     public Long id;
-    @Column(nullable=false)
+    @Column(nullable=false, length=500)
     @Constraints.Required
     public String name;
     @Constraints.Min(value=1, message = "The supply must be almost 1")

@@ -10,6 +10,7 @@ package models;
  * @author simon
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,6 +20,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
 @Entity
@@ -28,10 +31,14 @@ public class Sale extends Model {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
     @Column(nullable=false)
+    @Constraints.Required
     public String client;
 
     @Column(nullable=false)
     @OneToOne(cascade=CascadeType.ALL)
+    @JsonIgnoreProperties("sale")
+    @Constraints.Required
+    @Valid
     public SaleProduct saleProduct;
     
     public static List<Sale> all() {

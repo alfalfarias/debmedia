@@ -10,6 +10,7 @@ package models;
  * @author simon
  */
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -33,8 +34,13 @@ public class SaleProduct extends Model {
     public Long id;
     @Column(nullable=false)
     @Constraints.Required
+    @Constraints.MaxLength(500)
     public String name;
+    @Constraints.Required
+    @Constraints.MaxLength(500)
+    public String description;
     @Column(nullable=false)
+    @Constraints.Min(value=1, message = "The product cant be free")
     @Constraints.Required
     public Double price;
     
@@ -42,6 +48,7 @@ public class SaleProduct extends Model {
     public Sale sale; 
     
     @OneToMany(mappedBy = "saleProduct", cascade=CascadeType.ALL)
+    @JsonIgnoreProperties("saleProduct")
     public List<SaleProductSupply> saleProductSupplies = new ArrayList<SaleProductSupply>();
 
     public static List<Product> all() {

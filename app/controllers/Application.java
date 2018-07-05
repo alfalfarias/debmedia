@@ -1,9 +1,8 @@
 package controllers;
 
-import play.*;
-import play.mvc.*;
+import play.mvc.Controller;
+import play.mvc.Result;
 
-import views.html.*;
 
 public class Application extends Controller {
 
@@ -25,7 +24,7 @@ public class Application extends Controller {
 
     public static Result showSales() {
         return ok(
-          views.html.sales.render()
+          //views.html.sales.render()
         );
     }
 

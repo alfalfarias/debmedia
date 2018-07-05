@@ -63,7 +63,7 @@ public class Products extends Controller {
                 }
                 productSupply.id = null;
                 productSupply.name = supply.name;
-                productSupply.quantity = supply.quantity;
+                productSupply.quantity = 1;
                 supply.save();
             }
             Ebean.save(product);
