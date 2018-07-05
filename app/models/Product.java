@@ -10,24 +10,28 @@ package models;
  * @author simon
  */
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.util.*;
-
-import play.db.ebean.*;
-
-
-import javax.persistence.*;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import play.db.ebean.Model;
 
 @Entity
-@Table(name="products", uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "name"})})
+@Table(name="products")
 public class Product extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
-    @Column(nullable=false)
+    @Column(nullable=false, length=500)
     public String name;
+    @Column(nullable=false, length=500)
+    public String description;
     @Column(nullable=false)
     public double price;
     @JsonIgnoreProperties("product")

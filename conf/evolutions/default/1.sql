@@ -5,9 +5,9 @@
 
 create table products (
   id                        bigint not null,
-  name                      varchar(255) not null,
+  name                      varchar(500) not null,
+  description               varchar(500) not null,
   price                     double not null,
-  constraint uq_products_1 unique (id,name),
   constraint pk_products primary key (id))
 ;
 
@@ -46,7 +46,6 @@ create table supplies (
   id                        bigint not null,
   name                      varchar(255) not null,
   quantity                  integer not null,
-  constraint uq_supplies_1 unique (id,name),
   constraint pk_supplies primary key (id))
 ;
 

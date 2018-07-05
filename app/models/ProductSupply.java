@@ -10,14 +10,15 @@ package models;
  * @author simon
  */
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import java.util.*;
-
-import play.db.ebean.*;
-
-
-import javax.persistence.*;
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import play.db.ebean.Model;
 
 @Entity
 @Table(name="product_supplies")

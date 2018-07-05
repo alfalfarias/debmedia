@@ -10,12 +10,16 @@ package models;
  * @author simon
  */
 
-import java.util.*;
-
-import play.db.ebean.*;
-
-
-import javax.persistence.*;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import play.db.ebean.Model;
 
 @Entity
 @Table(name="sales")
@@ -33,10 +37,6 @@ public class Sale extends Model {
     public static List<Sale> all() {
       return find.all();
     }
-    
-    //public static List<Supply> all() {
-      //  return new ArrayList<Supply>();
-    //}
   
     public static void create(Sale sale) {
       sale.save();
