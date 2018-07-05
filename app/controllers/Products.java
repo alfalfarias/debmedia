@@ -15,6 +15,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javax.persistence.OptimisticLockException;
 import models.Product;
+import models.ProductSupply;
+import models.Supply;
+import models.forms.ProductForm;
+import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
 import static play.mvc.Controller.request;
@@ -38,14 +42,31 @@ public class Products extends Controller {
     public static Result save() {
         JsonNode json = request().body().asJson();
         ObjectNode result = Json.newObject();
-        Product product = null;
-        Ebean.beginTransaction();  
-        if (json == null){
-            result.put("message", "Expecting Json data");
-            return badRequest(result);
+        
+        Form<Product> productForm = Form.form(Product.class).bind(request().body().asJson());
+        if(productForm.hasErrors()){
+            return badRequest(productForm.errorsAsJson());
         }
-        try {  
-            product = (Product) Json.fromJson(json, Product.class);
+        Product product = (Product) Json.fromJson(json, Product.class);
+        String[] message = new String[] {"1"};
+        try {
+            Ebean.beginTransaction(); 
+            for (ProductSupply productSupply: product.productSupplies){
+                Supply supply = Supply.find.byId(productSupply.id);
+                if (supply == null){
+                    result.put("productSupplies", "Invalid value");
+                    return badRequest(result);
+                }
+                if (supply.quantity == 0){
+                    result.put("productSupplies", "Not quantity in stock");
+                    return badRequest(result);
+                }
+                productSupply.id = null;
+                productSupply.name = supply.name;
+                productSupply.quantity = 1;
+                supply.quantity -= 1;
+                supply.save();
+            }
             Ebean.save(product); 
             Ebean.commitTransaction();  
         } catch(OptimisticLockException e){
@@ -59,8 +80,8 @@ public class Products extends Controller {
         result.put("message", "OK");
         result.put("product", Json.toJson(product));
         return ok(result);
-        
     }
+    
     
     /**
      * Handle the 'edit form' submission 

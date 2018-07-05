@@ -20,6 +20,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
 @Entity
@@ -29,13 +31,19 @@ public class Product extends Model {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
     @Column(nullable=false, length=500)
+    @Constraints.Required
     public String name;
     @Column(nullable=false, length=500)
+    @Constraints.Required
     public String description;
+    @Constraints.Min(value=1, message = "The product cant be free")
     @Column(nullable=false)
+    @Constraints.Required
     public double price;
-    @JsonIgnoreProperties("product")
     @OneToMany(mappedBy = "product", cascade=CascadeType.ALL)
+    @JsonIgnoreProperties("product")
+    @Valid
+    @Constraints.Required
     public List<ProductSupply> productSupplies;
 
     public static List<Product> all() {

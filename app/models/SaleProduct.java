@@ -21,6 +21,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
 @Entity
@@ -28,10 +29,13 @@ import play.db.ebean.Model;
 public class SaleProduct extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Constraints.Required
     public Long id;
     @Column(nullable=false)
+    @Constraints.Required
     public String name;
     @Column(nullable=false)
+    @Constraints.Required
     public Double price;
     
     @OneToOne(cascade = CascadeType.ALL)
