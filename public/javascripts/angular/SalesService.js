@@ -1,7 +1,7 @@
-angular.module('ProductsService', [])
-.service('productsService', function($http){
+angular.module('SalesService', [])
+.service('salesService', function($http){
 
-	this.url = 'http://localhost:9000/products';
+	this.url = 'http://localhost:9000/sales';
 
    this.loadProducts = function () {
    	return $http.get(this.url)

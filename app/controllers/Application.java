@@ -8,7 +8,7 @@ import views.html.*;
 public class Application extends Controller {
 
     public static Result index() {
-        return redirect(routes.Supplies.list());
+        return redirect(routes.Application.showSupplies());
     }
 
     public static Result showSupplies() {
@@ -20,6 +20,12 @@ public class Application extends Controller {
     public static Result showProducts() {
     	return ok(
           views.html.products.render()
+        );
+    }
+
+    public static Result showSales() {
+        return ok(
+          views.html.sales.render()
         );
     }
 

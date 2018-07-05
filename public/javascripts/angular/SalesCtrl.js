@@ -1,14 +1,14 @@
 /** Controllers */
 angular.module('app')
-.controller('ProductCtrl', function ($uibModal, productsService, toastr) {
+.controller('SalesCtrl', function ($uibModal, salesService, toastr) {
     let vm = this;
 
-    vm.loadProducts = function () {
-      productsService.loadProducts()
-      .then(function (data) {
-        vm.products = data.products; 
-      });
-    };
+    // vm.loadProducts = function () {
+    //   productsService.loadProducts()
+    //   .then(function (data) {
+    //     vm.products = data.products; 
+    //   });
+    // };
     
     vm.open = function (product) {
 
@@ -23,7 +23,7 @@ angular.module('app')
           ariaLabelledBy: 'modal-title',
           ariaDescribedBy: 'modal-body',
           templateUrl: 'modal.html',
-          controller: 'ProModalInstanceCtrl',
+          controller: 'SellModalInstanceCtrl',
           controllerAs: 'vm', 
           resolve: {
             product: function () {
@@ -44,51 +44,51 @@ angular.module('app')
         });
     };
 
-    vm.openDelete = function (product, index) {
+  //   vm.openDelete = function (product, index) {
 
-    let modalInstance = $uibModal.open({
-      animation: true,
-      ariaLabelledBy: 'modal-title',
-      ariaDescribedBy: 'modal-body',
-      templateUrl: 'confirmodal.html',
-      size: 'md',
-      controller: function(productsService, $uibModalInstance) {
-        let vm = this;
-        vm.item = product;
+  //   let modalInstance = $uibModal.open({
+  //     animation: true,
+  //     ariaLabelledBy: 'modal-title',
+  //     ariaDescribedBy: 'modal-body',
+  //     templateUrl: 'confirmodal.html',
+  //     size: 'md',
+  //     controller: function(productsService, $uibModalInstance) {
+  //       let vm = this;
+  //       vm.item = product;
 
-        vm.delete = function () {
-          productsService.deleteProduct(vm.item.id);
-          $uibModalInstance.close();
-        };
+  //       vm.delete = function () {
+  //         productsService.deleteProduct(vm.item.id);
+  //         $uibModalInstance.close();
+  //       };
 
-        vm.cancel = function () {
-          $uibModalInstance.close();
-        }
+  //       vm.cancel = function () {
+  //         $uibModalInstance.close();
+  //       }
 
-      },
-      controllerAs: 'vm'
-    });
+  //     },
+  //     controllerAs: 'vm'
+  //   });
 
-     modalInstance.result.then(function () {
-      if(index !== undefined){
-        toastr.warning('Producto eliminado correctamente', 'Eliminado');
-        vm.products.splice(index, 1);
-      }
-    }, function () {
-      // console.log('Modal dismissed at: ' + new Date());
-    });
+  //    modalInstance.result.then(function () {
+  //     if(index !== undefined){
+  //       toastr.warning('Producto eliminado correctamente', 'Eliminado');
+  //       vm.products.splice(index, 1);
+  //     }
+  //   }, function () {
+  //     // console.log('Modal dismissed at: ' + new Date());
+  //   });
 
-  };
+  // };
 
 })
 
-.controller('ProModalInstanceCtrl', function ($uibModalInstance, product, productsService, suppliesService) {
+.controller('SellModalInstanceCtrl', function ($uibModalInstance, product, productsService, salesService) {
 
   let vm = this;
 
-  suppliesService.loadSupplies()
+  productsService.loadProducts()
   .then(function(data){
-    vm.supplies = data.supplies;
+    vm.products = data.products;
   });
 
   vm.product = {};

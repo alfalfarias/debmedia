@@ -1,47 +1,44 @@
 @import helper._
-@main("Insumos") {
+@main("Ventas") {
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
-	      <li class="nav-item active">
-	        <a class="nav-link" href>Insumos <span class="sr-only">(current)</span></a>
+	      <li class="nav-item">
+	        <a class="nav-link" href="http://localhost:9000/suppliesview">Insumos <span class="sr-only">(current)</span></a>
 	      </li>
 	      <li class="nav-item">
 	        <a class="nav-link" href="http://localhost:9000/productsview">Productos</a>
 	      </li>
-	      <li class="nav-item">
-	        <a class="nav-link" href="http://localhost:9000/salesview">Ventas</a>
+	      <li class="nav-item active">
+	        <a class="nav-link" href>Ventas</a>
 	      </li>
 	    </ul>
 	  </div>
 	</nav>
-	<div class="container-fluid" ng-controller="SuppliesCtrl as vm">
-		<div class="py-5 mx-auto w-75" ng-init="vm.loadSupplies()">
-		<h4>Insumos</h4>
+	<div class="container-fluid" ng-controller="SalesCtrl as vm">
+		<div class="py-5 mx-auto w-75" ng-init="vm.loadSales()">
+		<h4>Ventas</h4>
 			<div class="mb-4">
 				<button class="btn btn-primary float-right" ng-click="vm.open()"><i class="fas fa-plus-square"></i></button>
 			</div>
 	    	<table class="table table-hover table-inverse">
 	    		<thead>
 	    			<tr>
-	    				<th class="w-25">#</th>
-	    				<th class="w-25">Nombre</th>
-	    				<th class="w-25">Cantidad</th>
-	    				<th class="w-25">Opciones</th>
+	    				<th>#</th>
+	    				<th>Comprador</th>
+	    				<th>Producto</th>
+	    				<th>Cantidad</th>
 	    			</tr>
 	    		</thead>
 	    		<tbody>
-	    			<tr ng-repeat="item in vm.supplies">
-	    				<td class="w-25">{{item.id}}</td>
-	    				<td class="w-25 text-capitalize">{{item.name}}</td>
-	    				<td class="w-25">{{item.quantity}}</td>
-	    				<td class="w-25">
-	    					<button class="btn btn-warning" ng-click="vm.open(item)"><i class="text-white fas fa-edit"></i></button>
-	    					<button class="btn btn-danger" ng-click="vm.openDelete(item, $index)"><i class="fas fa-trash-alt"></i></button>
-	    				</td>
+	    			<tr ng-repeat="item in vm.products">
+	    				<td>{{item.id}}</td>
+	    				<td class="text-capitalize">{{item.name}}</td>
+	    				<td class="text-capitalize">{{item.name}}</td>
+	    				<td class="text-capitalize">{{item.quantity}}</td>
 	    			</tr>
 	    		</tbody>
 	    	</table>	
@@ -50,16 +47,20 @@
 
 	<script type="text/ng-template" id="modal.html">
         <div class="modal-header">
-            <h3 class="modal-title" id="modal-title">{{vm.edit? 'Editar ':'Crear '}} Insumo</h3>
+            <h3 class="modal-title" id="modal-title">Registrar Venta</h3>
         </div>
         <div class="modal-body" id="modal-body">
         	<form name="form">
 			  <div class="form-group">
-			    <label for="inputName">Nombre del Insumo</label>
+			    <label for="inputName">Comprador</label>
 			    <input type="text" ng-model="vm.insumo.name" name="name" class="form-control" id="inputName" aria-describedby="inputName" placeholder="Nombre" required>
 			  </div>
 			  <div class="form-group">
-			    <label for="inputQuantity">Cantidad existente</label>
+			    <label for="inputSupplies">Producto</label>
+			    <select id="inputSupplies" name="supplies" ng-options="item as item.name for item in vm.products" ng-model="vm.product.productSupplies" class="form-control text-capitalize" required></select>
+			  </div>
+			  <div class="form-group">
+			    <label for="inputQuantity">Cantidad</label>
 			    <input type="number" ng-model="vm.insumo.quantity" class="form-control" name="quantity" id="inputQuantity" placeholder="Cantidad" required>
 			  </div>
 			</form>
@@ -70,16 +71,4 @@
         </div>
 	</script>
 
-	<script type="text/ng-template" id="confirmodal.html">
-        <div class="modal-header">
-            <h3 class="modal-title text-capitalize" id="modal-title">{{vm.item.name}}</h3>
-        </div>
-        <div class="modal-body" id="modal-body">
-        	<h4>¿Realmente quiere borrar este insumo?</h4>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger" type="button" ng-click="vm.delete()">Eliminar</button>
-            <button class="btn btn-default" type="button" ng-click="vm.cancel()">Regresar</button>
-        </div>
-	</script>
 }
