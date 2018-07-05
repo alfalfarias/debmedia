@@ -22,9 +22,13 @@ angular.module('ProductsService', [])
    	// return '201 CREATED';
    };
 
-   this.uploadProduct = function (item) {
-   	console.log(item);
-   	// return '200 OK';
+   this.uploadProduct = function (data) {
+   	return $http.put(this.url+'/'+data.id, data)
+        .then(function success(response){
+         return response;
+        }, function error(error){
+         return error;
+      });
    };
 
    this.deleteProduct = function (id) {
