@@ -1,6 +1,6 @@
 angular.module('app', [
 	'ui.bootstrap', 
-	'ngAnimate', 
+	'ngAnimate',
 	'toastr', 
 	'SuppliesService', 
 	'ProductsService',

@@ -8,7 +8,9 @@ import views.html.*;
 public class Application extends Controller {
 
     public static Result index() {
-        return redirect(routes.Application.showSupplies());
+        return ok(
+          views.html.supplies.render()
+        );
     }
 
     public static Result showSupplies() {
