@@ -19,12 +19,15 @@ angular.module('SuppliesService', [])
       }, function error(error){
          return error;
       });
-   	// return '201 CREATED';
    };
 
    this.uploadSupply = function (data) {
-   	// console.log(item);
-   	// return '200 OK';
+   	return $http.put(this.url+'/'+data.id, data)
+        .then(function success(response){
+         return response;
+        }, function error(error){
+         return error;
+      });
    }
 
    this.deleteSupply = function (id) {

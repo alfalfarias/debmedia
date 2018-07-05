@@ -1,9 +1,7 @@
 /** Controllers */
 angular.module('app')
-.controller('ProductCtrl', function ($uibModal, productsService) {
+.controller('ProductCtrl', function ($uibModal, productsService, toastr) {
     let vm = this;
-
-    vm.navbarurl = "../../../app/views/navbar.html";
 
     vm.loadProducts = function () {
       productsService.loadProducts()
@@ -34,8 +32,15 @@ angular.module('app')
           }
         });
 
-        modalInstance.result.then(function () {
-          vm.loadProducts();
+        modalInstance.result.then(function (data) {
+          if(data.data.message){
+            toastr.success('Producto registrado correctamente', 'Bien');
+            vm.loadProducts();
+          }else {
+            toastr.error(data.data.quantity[0], 'Error');
+          }
+        }, function () {
+      // console.log('Modal dismissed at: ' + new Date());
         });
     };
 
@@ -66,6 +71,7 @@ angular.module('app')
 
      modalInstance.result.then(function () {
       if(index !== undefined){
+        toastr.warning('Producto eliminado correctamente', 'Eliminado');
         vm.products.splice(index, 1);
       }
     }, function () {
@@ -93,12 +99,20 @@ angular.module('app')
   }
 
   vm.ok = function () {
+    angular.forEach(vm.product.productSupplies, function(value, key) {
+      vm.product.productSupplies[key].quantity = 1;
+      });
     if(!vm.edit) {
-      productsService.setProduct(vm.product);
+      productsService.setProduct(vm.product)
+      .then(function (response) {
+        $uibModalInstance.close(response);
+      });
     }else {
-      productsService.uploadProduct(vm.product);
+      productsService.uploadProduct(vm.product)
+      .then(function (response) {
+        $uibModalInstance.close(response);
+      });
     }
-    $uibModalInstance.close();
   };
 
   vm.cancel = function () {

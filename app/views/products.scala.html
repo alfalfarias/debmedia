@@ -6,10 +6,10 @@
 	  </button>
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    <ul class="navbar-nav mr-auto">
-	      <li class="nav-item active">
+	      <li class="nav-item">
 	        <a class="nav-link" href="http://localhost:9000/suppliesview">Insumos <span class="sr-only">(current)</span></a>
 	      </li>
-	      <li class="nav-item">
+	      <li class="nav-item active">
 	        <a class="nav-link" href="http://localhost:9000/productsview">Productos</a>
 	      </li>
 	      <li class="nav-item">
@@ -30,6 +30,7 @@
 	    				<th>#</th>
 	    				<th>Nombre</th>
 	    				<th>Insumos</th>
+	    				<th>Descripción</th>
 	    				<th>Precio</th>
 	    				<th>Opciones</th>
 	    			</tr>
@@ -41,6 +42,7 @@
 	    				<td>
 	    					<span ng-repeat="supply in item.productSupplies">{{supply.name}} <br></span>
 	    				</td>
+	    				<td>{{item.description}}</td>
 	    				<td>{{item.price}}</td>
 	    				<td>
 	    					<button class="btn btn-sm btn-warning" ng-click="vm.open(item)"><i class="text-white fas fa-edit"></i></button>
@@ -57,26 +59,30 @@
             <h3 class="modal-title" id="modal-title">Crear Producto</h3>
         </div>
         <div class="modal-body" id="modal-body">
-        	<form>
+        	<form name="form">
 			  <div class="form-group">
 			    <label for="inputName">Nombre del Producto</label>
-			    <input type="text" ng-model="vm.product.name" class="form-control" id="inputName" aria-describedby="inputName" placeholder="Nombre">
+			    <input type="text" name="name" ng-model="vm.product.name" class="form-control" id="inputName" aria-describedby="inputName" placeholder="Nombre" required>
 			  </div>
 			  <div class="form-group">
 			    <label for="inputSupplies">Insumos</label>
-			    <select id="inputSupplies" ng-options="item as item.name for item in vm.supplies" ng-model="vm.product.productSupplies" ng-multiple="true" multiple class="form-control"></select>
+			    <select id="inputSupplies" name="supplies" ng-options="item as item.name for item in vm.supplies" ng-model="vm.product.productSupplies" ng-multiple="true" multiple class="form-control" required></select>
 			    <br>
 			    <span>Actuales: <span class="text-capitalize" ng-repeat="item in vm.product.productSupplies">{{item.name}} </span>
 			    </span>
 			  </div>
 			  <div class="form-group">
+			    <label for="description">Example textarea</label>
+			    <textarea class="form-control" name="description" ng-model="vm.product.description" id="description" rows="3" maxlength="500" required></textarea>
+			  </div>
+			  <div class="form-group">
 			    <label for="inputQuantity">Precio</label>
-			    <input type="number" ng-model="vm.product.price" class="form-control" id="inputQuantity" placeholder="Precio">
+			    <input type="number" name="price" ng-model="vm.product.price" class="form-control" id="inputQuantity" placeholder="Precio" min="1" required>
 			  </div>
 			</form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" type="button" ng-click="vm.ok()">Guardar</button>
+            <button class="btn btn-primary" type="button" ng-click="vm.ok()" ng-disabled="form.$invalid">Guardar</button>
             <button class="btn btn-danger" type="button" ng-click="vm.cancel()">Cancelar</button>
         </div>
 	</script>

@@ -1,1 +1,7 @@
-angular.module('app', ['ui.bootstrap', 'SuppliesService', 'ProductsService']);
+angular.module('app', [
+	'ui.bootstrap', 
+	'ngAnimate', 
+	'toastr', 
+	'SuppliesService', 
+	'ProductsService'
+]);

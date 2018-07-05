@@ -1,6 +1,6 @@
 /** Controllers */
 angular.module('app')
-.controller('SuppliesCtrl', function ($uibModal, suppliesService) {
+.controller('SuppliesCtrl', function ($uibModal, suppliesService, toastr) {
     let vm = this;
 
     vm.loadSupplies = function () {
@@ -33,9 +33,12 @@ angular.module('app')
         });
 
         modalInstance.result.then(function (data) {
-          // if(data === 'created'){
+          if(data.data.message){
+            toastr.success('Insumo registrado correctamente', 'Bien');
             vm.loadSupplies();
-          // }
+          }else {
+            toastr.error(data.data.quantity[0], 'Error');
+          }
         }, function () {
           // console.log('Modal dismissed at: ' + new Date());
         });
@@ -68,6 +71,7 @@ angular.module('app')
 
     modalInstance.result.then(function () {
       if(index !== undefined){
+        toastr.warning('Insumo eliminado correctamente', 'Eliminado');
         vm.supplies.splice(index, 1);
       }
     }, function () {
@@ -91,11 +95,16 @@ angular.module('app')
 
   vm.ok = function () {
     if(!vm.edit) {
-      suppliesService.setSupply(vm.insumo);
+      suppliesService.setSupply(vm.insumo)
+      .then(function (response) {
+        $uibModalInstance.close(response);
+      });
     }else {
-      suppliesService.uploadSupply(vm.insumo);
+      suppliesService.uploadSupply(vm.insumo)
+      .then(function (response) {
+        $uibModalInstance.close(response);
+      });
     }
-      $uibModalInstance.close();
   };
 
   vm.cancel = function () {

@@ -13,7 +13,6 @@ angular.module('ProductsService', [])
    };
 
    this.setProduct = function (data) {
-   	console.log(data);
    	return $http.post(this.url, data)
    	  .then(function success(response){
    	  	return response;
