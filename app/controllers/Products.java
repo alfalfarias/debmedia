@@ -12,6 +12,7 @@ package controllers;
 
 import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import javax.persistence.OptimisticLockException;
 import models.Product;
@@ -48,17 +49,18 @@ public class Products extends Controller {
             return badRequest(productForm.errorsAsJson());
         }
         Product product = (Product) Json.fromJson(json, Product.class);
-        String[] message = new String[] {"1"};
         try {
             Ebean.beginTransaction(); 
             for (ProductSupply productSupply: product.productSupplies){
                 Supply supply = Supply.find.byId(productSupply.id);
                 if (supply == null){
-                    result.put("productSupplies", "Invalid value");
+                    result.put("message", "Supply ID "+productSupply.id+" does not exist in stock");
+                    result.withArray("productSupplies").add("Supply ID "+productSupply.id+" does not exist in stock");
                     return badRequest(result);
                 }
                 if (supply.quantity == 0){
-                    result.put("productSupplies", "Not quantity in stock");
+                    result.put("message", "Not quantity of Supply ID "+productSupply+" in stock");
+                    result.withArray("productSupplies").add("Not quantity of Supply ID "+productSupply+" in stock");
                     return badRequest(result);
                 }
                 productSupply.id = null;
