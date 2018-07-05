@@ -17,4 +17,10 @@ public class Application extends Controller {
         );
     }
 
+    public static Result showProducts() {
+    	return ok(
+          views.html.products.render()
+        );
+    }
+
 }

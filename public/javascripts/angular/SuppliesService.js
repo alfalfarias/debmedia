@@ -1,51 +1,39 @@
 angular.module('SuppliesService', [])
 .service('suppliesService', function($http){
 
-	this.supplies = [{
-	        "id": 1,
-	        "name": "Insumo 1",
-	        "quantity": 15
-	    },
-	    {
-	        "id": 2,
-	        "name": "Insumo 2",
-	        "quantity": 13
-	    },
-	    {
-	        "id": 3,
-	        "name": "Insumo 3",
-	        "quantity": 10
-	    },
-	    {
-	        "id": 4,
-	        "name": "Insumo 4",
-	        "quantity": 6
-	}];
-
+   this.url = 'http://localhost:9000/supplies';
 
    this.loadSupplies = function() {
-      return $http.get('http://localhost:9000/supplies')
+      return $http.get(this.url)
       .then(function successCallback(response){
       	return response.data;
       }, function errorCallback(error){
-      	console.log(error);
-      	return 'error';
+      	return error;
       });
    };
 
-   this.setSupply = function (item) {
-   	console.log(item);
+   this.setSupply = function (data) {
+   	return $http.post(this.url, data)
+      .then(function success(response) {
+         return response;
+      }, function error(error){
+         return error;
+      });
    	// return '201 CREATED';
    };
 
-   this.uploadSupply = function (item) {
+   this.uploadSupply = function (data) {
    	// console.log(item);
    	// return '200 OK';
    }
 
    this.deleteSupply = function (id) {
-   	// console.log(id);
-   	// return '200 OK';
+   	return $http.delete(this.url+'/'+id)
+      .then(function success(response) {
+         return response;
+      }, function error(error) {
+         return error;
+      });
    };
 
 });

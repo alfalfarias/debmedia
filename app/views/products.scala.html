@@ -1,7 +1,25 @@
 @import helper._
 @main("Productos") {
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <ul class="navbar-nav mr-auto">
+	      <li class="nav-item active">
+	        <a class="nav-link" href="http://localhost:9000/suppliesview">Insumos <span class="sr-only">(current)</span></a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="http://localhost:9000/productsview">Productos</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="#">Ventas</a>
+	      </li>
+	    </ul>
+	  </div>
+	</nav>
 	<div class="container-fluid" ng-controller="ProductCtrl as vm">
-		<div class="py-5 mx-auto w-75">
+		<div class="py-5 mx-auto w-75" ng-init="vm.loadProducts()">
 		<h4>Productos</h4>
 			<div class="mb-4">
 				<button class="btn btn-primary float-right" ng-click="vm.open()"><i class="fas fa-plus-square"></i></button>
@@ -21,12 +39,12 @@
 	    				<td>{{item.id}}</td>
 	    				<td>{{item.name}}</td>
 	    				<td>
-	    					<span ng-repeat="supply in item.supplies">{{supply.name}} </span>
+	    					<span ng-repeat="supply in item.productSupplies">{{supply.name}} <br></span>
 	    				</td>
 	    				<td>{{item.price}}</td>
 	    				<td>
 	    					<button class="btn btn-sm btn-warning" ng-click="vm.open(item)"><i class="text-white fas fa-edit"></i></button>
-	    					<button class="btn btn-sm btn-danger" ng-click="vm.openDelete(item)"><i class="fas fa-trash-alt"></i></button>
+	    					<button class="btn btn-sm btn-danger" ng-click="vm.openDelete(item, $index)"><i class="fas fa-trash-alt"></i></button>
 	    				</td>
 	    			</tr>
 	    		</tbody>
@@ -46,9 +64,9 @@
 			  </div>
 			  <div class="form-group">
 			    <label for="inputSupplies">Insumos</label>
-			    <select id="inputSupplies" ng-options="item as item.name for item in vm.insumos" ng-model="vm.product.supplies" ng-multiple="true" multiple class="form-control"></select>
+			    <select id="inputSupplies" ng-options="item as item.name for item in vm.supplies" ng-model="vm.product.productSupplies" ng-multiple="true" multiple class="form-control"></select>
 			    <br>
-			    <span>Actuales: <span class="text-capitalize" ng-repeat="item in vm.product.supplies">{{item.name}} </span>
+			    <span>Actuales: <span class="text-capitalize" ng-repeat="item in vm.product.productSupplies">{{item.name}} </span>
 			    </span>
 			  </div>
 			  <div class="form-group">
@@ -68,7 +86,7 @@
             <h3 class="modal-title text-capitalize" id="modal-title">{{vm.item.name}}</h3>
         </div>
         <div class="modal-body" id="modal-body">
-        	<h4>¿Realmente quiere borrar este insumo?</h4>
+        	<h4>¿Realmente quiere borrar este Producto?</h4>
         </div>
         <div class="modal-footer">
             <button class="btn btn-danger" type="button" ng-click="vm.delete()">Eliminar</button>
