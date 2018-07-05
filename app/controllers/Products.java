@@ -17,7 +17,6 @@ import javax.persistence.OptimisticLockException;
 import models.Product;
 import models.ProductSupply;
 import models.Supply;
-import models.forms.ProductForm;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -48,26 +47,20 @@ public class Products extends Controller {
             return badRequest(productForm.errorsAsJson());
         }
         Product product = (Product) Json.fromJson(json, Product.class);
-        String[] message = new String[] {"1"};
         try {
             Ebean.beginTransaction(); 
             for (ProductSupply productSupply: product.productSupplies){
                 Supply supply = Supply.find.byId(productSupply.id);
                 if (supply == null){
-                    result.put("productSupplies", "Invalid value");
-                    return badRequest(result);
-                }
-                if (supply.quantity == 0){
-                    result.put("productSupplies", "Not quantity in stock");
+                    result.put("message", "Supply '"+productSupply.name+"' does not exist in stock");
+                    result.withArray("productSupplies").add("Supply '"+productSupply.name+"' does not exist in stock");
                     return badRequest(result);
                 }
                 productSupply.id = null;
                 productSupply.name = supply.name;
-                productSupply.quantity = 1;
-                supply.quantity -= 1;
                 supply.save();
             }
-            Ebean.save(product); 
+            Ebean.save(product);
             Ebean.commitTransaction();  
         } catch(OptimisticLockException e){
             Ebean.rollbackTransaction();
