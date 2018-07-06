@@ -33,7 +33,7 @@ datos y no puede ser editada.
 - Utilizar las **anotaciones de Ebean** (*@Entity,  @Id*) [**Documentación**](https://www.playframework.com/documentation/2.2.x/JavaEbean#Usingthe-play.db.ebean.Model-superclass)
 
 ### Puntos extras
-#### 1. Considerar la posibilidad de que varios usuarios estén realizando al mismo tiempo acciones sobre las mismas tablas.
+### 1. Considerar la posibilidad de que varios usuarios estén realizando al mismo tiempo acciones sobre las mismas tablas.
 > **Caso de ejemplo:** Producto A necesita el ​ Insumo 1 e Insumo 2, en stock quedan uno de cada insumo. ¿Como salvaguardar el caso en que dos vendedores intentan vender al mismo tiempo un ​ Producto A?
 
  Para evitar este tipo de situaciones existen las transacciones. Estas permiten la ejecución de bloques completos de operaciones (visualizados como una unidad entera), verificando que se realicen todas las acciones a realizar en la base de datos. Como medida de seguridad, las tablas con las que interactúa se bloquean hasta terminar la ejecución de la transacción. De modo que si la tabla "supplies" se ve implicada en una venta, esta será bloqueada hasta terminar la operación y luego liberada cuando la misma termine.
