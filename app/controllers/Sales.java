@@ -28,20 +28,20 @@ import static play.mvc.Results.ok;
 public class Sales {
     public static Result list() {
         ObjectNode result = Json.newObject();
-        
+
         result.put("message", "OK");
         result.put("sales", Json.toJson(Sale.all()));
         return ok(result);
     }
-    
+
     /**
-     * Handle the 'new product form' submission 
-     * @return 
+     * Handle the 'new product form' submission
+     * @return
      */
     public static Result save() {
         JsonNode json = request().body().asJson();
         ObjectNode result = Json.newObject();
-        
+
         Form<Sale> SaleForm = Form.form(Sale.class).bind(request().body().asJson());
         if(SaleForm.hasErrors()){
             return badRequest(SaleForm.errorsAsJson());
@@ -58,7 +58,7 @@ public class Sales {
         sale.saleProduct.description = product.description;
         sale.saleProduct.price = product.price;
         try {
-            Ebean.beginTransaction(); 
+            Ebean.beginTransaction();
             for (ProductSupply productSupply: product.productSupplies){
                 Supply supply = Supply.find.where().eq("name", productSupply.name).setMaxRows(1).findUnique();
                 if (supply == null){
@@ -71,32 +71,32 @@ public class Sales {
                     result.withArray("productSupplies").add("Se necesitan "+sale.saleProduct.quantity * productSupply.quantity+" unidades del insumo '"+productSupply.name+"' para el producto '"+product.name+"' y solo existen "+supply.quantity+" en stock");
                     return badRequest(result);
                 }
-                supply.quantity -= productSupply.quantity;
+                supply.quantity -= (sale.saleProduct.quantity * productSupply.quantity);
                 Ebean.save(supply);
-                SaleProductSupply saleProductSupply = new SaleProductSupply(null, supply.name, 1);
+                SaleProductSupply saleProductSupply = new SaleProductSupply(null, supply.name, (sale.saleProduct.quantity * productSupply.quantity));
                 sale.saleProduct.saleProductSupplies.add(saleProductSupply);
             }
             Ebean.save(sale);
-            Ebean.commitTransaction();  
+            Ebean.commitTransaction();
         } catch(OptimisticLockException e){
             Ebean.rollbackTransaction();
-            Ebean.endTransaction(); 
+            Ebean.endTransaction();
             result.put("message", e.getMessage());
             return badRequest(result);
         } finally {
-            Ebean.endTransaction();  
+            Ebean.endTransaction();
         }
         result.put("message", "OK");
         result.put("sale", Json.toJson(sale));
-        return ok(result);        
+        return ok(result);
     }
-    
-    
+
+
     /**
-     * Handle the 'edit form' submission 
+     * Handle the 'edit form' submission
      *
      * @param id Id of the product to edit
-     * @return 
+     * @return
      */
     public static Result retrieve(Long id) {
         ObjectNode result = Json.newObject();
@@ -109,26 +109,26 @@ public class Sales {
         result.put("message", "OK");
         return ok(result);
     }
-    
+
     /**
-     * Handle the 'edit form' submission 
+     * Handle the 'edit form' submission
      *
      * @param id Id of the product to edit
-     * @return 
+     * @return
      */
     public static Result update(Long id) {
         JsonNode json = request().body().asJson();
         ObjectNode result = Json.newObject();
-        
+
         result.put("Sales", Json.toJson(json));
         result.put("message", "OK");
         return ok(result);
     }
-    
+
     /**
      * Handle product deletion
      * @param id
-     * @return 
+     * @return
      */
     public static Result delete(Long id) {
         ObjectNode result = Json.newObject();
