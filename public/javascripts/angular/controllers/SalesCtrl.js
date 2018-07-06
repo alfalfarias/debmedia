@@ -3,20 +3,14 @@ angular.module('app')
 .controller('SalesCtrl', function ($uibModal, salesService, toastr) {
     let vm = this;
 
-    // vm.loadProducts = function () {
-    //   productsService.loadProducts()
-    //   .then(function (data) {
-    //     vm.products = data.products; 
-    //   });
-    // };
+    vm.loadSales = function () {
+      salesService.loadSales()
+      .then(function (data) {
+        vm.sales = data.sales; 
+      });
+    };
     
-    vm.open = function (product) {
-
-      let item = {};
-
-      if(product !== undefined){
-        item = product;
-      }
+    vm.open = function () {
 
         let modalInstance = $uibModal.open({
           animation: true,
@@ -24,65 +18,25 @@ angular.module('app')
           ariaDescribedBy: 'modal-body',
           templateUrl: 'modal.html',
           controller: 'SellModalInstanceCtrl',
-          controllerAs: 'vm', 
-          resolve: {
-            product: function () {
-              return item;
-            }
-          }
+          controllerAs: 'vm'
         });
 
         modalInstance.result.then(function (data) {
           if(data.data.message){
-            toastr.success('Producto registrado correctamente', 'Bien');
-            vm.loadProducts();
+            toastr.success('Venta realizada correctamente', 'Bien');
+            vm.loadSales();
           }else {
-            toastr.error(data.data.quantity[0], 'Error');
+            console.log(data);
+            // toastr.error(data.data.quantity[0], 'Error');
           }
         }, function () {
       // console.log('Modal dismissed at: ' + new Date());
         });
     };
 
-  //   vm.openDelete = function (product, index) {
-
-  //   let modalInstance = $uibModal.open({
-  //     animation: true,
-  //     ariaLabelledBy: 'modal-title',
-  //     ariaDescribedBy: 'modal-body',
-  //     templateUrl: 'confirmodal.html',
-  //     size: 'md',
-  //     controller: function(productsService, $uibModalInstance) {
-  //       let vm = this;
-  //       vm.item = product;
-
-  //       vm.delete = function () {
-  //         productsService.deleteProduct(vm.item.id);
-  //         $uibModalInstance.close();
-  //       };
-
-  //       vm.cancel = function () {
-  //         $uibModalInstance.close();
-  //       }
-
-  //     },
-  //     controllerAs: 'vm'
-  //   });
-
-  //    modalInstance.result.then(function () {
-  //     if(index !== undefined){
-  //       toastr.warning('Producto eliminado correctamente', 'Eliminado');
-  //       vm.products.splice(index, 1);
-  //     }
-  //   }, function () {
-  //     // console.log('Modal dismissed at: ' + new Date());
-  //   });
-
-  // };
-
 })
 
-.controller('SellModalInstanceCtrl', function ($uibModalInstance, product, productsService, salesService) {
+.controller('SellModalInstanceCtrl', function ($uibModalInstance, productsService, salesService) {
 
   let vm = this;
 
@@ -91,28 +45,16 @@ angular.module('app')
     vm.products = data.products;
   });
 
-  vm.product = {};
-
-  if(product.name){
-    vm.edit = true;
-    angular.copy(product, vm.product);
-  }
+  vm.sale = {};
 
   vm.ok = function () {
-    angular.forEach(vm.product.productSupplies, function(value, key) {
-      vm.product.productSupplies[key].quantity = 1;
-      });
-    if(!vm.edit) {
-      productsService.setProduct(vm.product)
-      .then(function (response) {
-        $uibModalInstance.close(response);
-      });
-    }else {
-      productsService.uploadProduct(vm.product)
-      .then(function (response) {
-        $uibModalInstance.close(response);
-      });
-    }
+    let data = {};
+    angular.copy(vm.sale, data)
+    delete data.saleProduct.productSupplies;
+    salesService.setSell(data)
+    .then(function (response) {
+      $uibModalInstance.close(response);
+    });
   };
 
   vm.cancel = function () {
