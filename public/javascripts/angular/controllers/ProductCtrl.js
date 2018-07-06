@@ -37,7 +37,15 @@ angular.module('app')
             toastr.success('Producto registrado correctamente', 'Bien');
             vm.loadProducts();
           }else {
-            toastr.error(data.data.quantity[0], 'Error');
+            for (let prop in data.data) {
+                if(data.data[prop].length > 1){
+                  for (let i = 0; i < data.data[prop].length; i++) {
+                    toastr.error(data.data[prop][i], 'Error');
+                  }
+                }else {
+                  toastr.error(data.data[prop][0], 'Error');
+                }
+            }
           }
         }, function () {
       // console.log('Modal dismissed at: ' + new Date());
