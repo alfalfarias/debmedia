@@ -3,8 +3,7 @@
 ## Deb media - test
 
 ### Requerimientos
-- **Java Development Kit** [JDK-1.8.0_171](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.h
-tml)
+- **Java Development Kit** [JDK-1.8.0_171](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - **Back-end** [Play Framework v2.2.4](https://downloads.typesafe.com/play/2.2.4/play-2.2.4.zip)
 - **Front-end** [AngularJS v1.5.0](https://code.angularjs.org/1.5.0)
 - **ORM** [Ebean](https://www.playframework.com/documentation/2.2.4/JavaEbean)
@@ -49,9 +48,15 @@ vendedores intentan vender al mismo tiempo un ​ Producto A?
     > - **Los insumos del producto no pueden regresar al stock del almacén**. Si se necesita autar la información sobre ventar realizadas con éxito y canceladas, se agregaría un nuevo campo a la tabla "sales" indicando si la venta fue cancelada o no. De otro modo, con eliminar el registro sería suficiente, puesto que no sería necesario reponerlo en inventario.
 
 3) Cómo indicarías en rojo los items que estan sin stock.
-  - Con una consulta a la tabla "supplies" es suficiente, ya que el campo "quantity" indica la cantidad en existencia del producto en cuestión, para este caso sería cero (0), de esta forma se puede saber que no hay items en el stock.
+  - Con una consulta a la tabla "supplies" es suficiente, ya que el campo "quantity" indica la cantidad en existencia del producto en cuestión, para este caso sería cero (0), de esta forma se puede saber que no hay items en el stock. (Backend)
+
+  - Al mismo tiempo en la vista del usuario se puede hacer uso de la directiva ng-class, que al cumplirse la condición de quantity igual a 0, coloque una clase 'danger' predefinida por bootstrap, para indicar con color rojo que la existencia del producto está agotada. (Frontend)
 
 4) Qué tests realizarías sobre está aplicación? Mencionarlos.
+-Automatización de pruebas del api usando Postman: Mediante el uso del software Postman se realizan request automáticas al api, probando cada endpoint y buscando fallas en su comportamiento al verificar el estatus de la petición http.
+- Pruebas unitarias de Java con JUnit: Se pueden efectuar pruebas mas especializadas, ya que tiene una interacción directa con los metodos y clases codificados en la aplicación.
+
+- Pruebas unitarias de Angularjs con Karma: Mediante el uso del framework Karma se evalua el comportamiento de los distintos servicios, controladores y filtros que conforman la aplicación. Personalizando el test unitario a realizar en cada uno de estos elementos.  
 
 5) Cómo agregarías autenticación y autorización básicas a esta aplicación?
     5.1) Autenticación. La autenticación es el proceso por el cual se identifica a un usuario en específico. En ese sentido, existen muchas herramientas en el desarrollo web, como lo es el caso del uso de tokens o cookies.
@@ -64,5 +69,8 @@ vendedores intentan vender al mismo tiempo un ​ Producto A?
 
     5.2) Autorización. Son los permisos necesarios que necesita un usuario para acceder a un recurso (endpoint).
 
+
 6) ¿Qué técnica conoces para distribuir correctamente los assets de una aplicación cuando
 muchos usuarios la utilizan?
+	
+- En el caso de los assets de terceros una buena práctica sería el uso de los CDN para el manejo de estos, debido a que de esta forma se evita hacer peticiones excesivas al servidor solo para la carga de los archivos básicos. Adicionalmente, para aligerar la carga del servidor, los assets propios de la aplicación pueden ser renderizados desde otros servidores dedicados al almacenamiento de estos.  
