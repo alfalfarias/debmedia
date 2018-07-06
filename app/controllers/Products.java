@@ -49,7 +49,7 @@ public class Products extends Controller {
         Product product = (Product) Json.fromJson(json, Product.class);
         Product productTable = Product.find.where().eq("name", product.name).setMaxRows(1).findUnique();
         if (productTable != null){
-            result.put("message", "The Product '"+product.name+"' already exists");
+            result.put("message", "El nombre de producto '"+product.name+"' ya existe");
             return badRequest(result);
         }
         try {
@@ -57,8 +57,8 @@ public class Products extends Controller {
             for (ProductSupply productSupply: product.productSupplies){
                 Supply supply = Supply.find.byId(productSupply.id);
                 if (supply == null){
-                    result.put("message", "Supply '"+productSupply.name+"' does not exist in stock");
-                    result.withArray("productSupplies").add("Supply '"+productSupply.name+"' does not exist in stock");
+                    result.put("message", "El insumo '"+productSupply.name+"' no existe en el stock");
+                    result.withArray("productSupplies").add("El insumo '"+productSupply.name+"' no existe en el stock");
                     return badRequest(result);
                 }
                 productSupply.id = null;
@@ -92,7 +92,7 @@ public class Products extends Controller {
         ObjectNode result = Json.newObject();
         Product product = Product.find.byId(id);
         if (product == null){
-            result.put("message", "product not found");
+            result.put("message", "No se encontró el producto");
             return badRequest(result);
         }
         result.put("product", Json.toJson(product));
@@ -116,12 +116,12 @@ public class Products extends Controller {
         }
         Product product = (Product) Json.fromJson(json, Product.class);
         if (product == null){
-            result.put("message", "Product not found");
+            result.put("message", "No se encontró el producto");
             return badRequest(result);
         }
         Product productTable = Product.find.where().eq("name", product.name).ne("id",id).setMaxRows(1).findUnique();
         if (productTable != null){
-            result.put("message", "The Product '"+product.name+"' already exists");
+            result.put("message", "El nombre de producto '"+product.name+"' ya existe");
             return badRequest(result);
         }
         
@@ -131,8 +131,8 @@ public class Products extends Controller {
                 Supply supplyTable = Supply.find.where().eq("name", productSupply.name).setMaxRows(1).findUnique();
                 ProductSupply productSupplyTable = ProductSupply.find.where().eq("name", productSupply.name).setMaxRows(1).findUnique();
                 if (supplyTable == null && productSupplyTable == null){
-                    result.put("message", "The Supply '"+productSupply.name+"' does not exist");
-                    result.withArray("productSupplies").add("The Supply '"+productSupply.name+"' does not exist");
+                    result.put("message", "El insumo '"+productSupply.name+"' no existe");
+                    result.withArray("productSupplies").add("El insumo '"+productSupply.name+"' no existe");
                     return badRequest(result);
                 }
                 productSupply.id = null;
@@ -164,7 +164,7 @@ public class Products extends Controller {
         ObjectNode result = Json.newObject();
         Product product = Product.find.byId(id);
         if (product == null){
-            result.put("message", "Product not found");
+            result.put("message", "No se encontró el producto");
             return badRequest(result);
         }
         product.delete();

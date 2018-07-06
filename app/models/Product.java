@@ -38,7 +38,7 @@ public class Product extends Model {
     @Constraints.Required
     @Constraints.MaxLength(500)
     public String description;
-    @Constraints.Min(value=1, message = "The product cant be free")
+    @Constraints.Min(value=1, message = "El producto no puede ser gratis")
     @Column(nullable=false)
     @Constraints.Required
     public double price;

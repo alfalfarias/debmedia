@@ -30,6 +30,7 @@ create table sale_products (
   id                        bigint not null,
   name                      varchar(255) not null,
   description               varchar(255),
+  quantity                  integer not null,
   price                     double not null,
   sale_id                   bigint,
   constraint pk_sale_products primary key (id))

@@ -49,8 +49,8 @@ public class Sales {
         Sale sale = (Sale) Json.fromJson(json, Sale.class);
         Product product = Product.find.where().eq("name", sale.saleProduct.name).setMaxRows(1).findUnique();
         if (product == null){
-            result.put("message", "Product '"+sale.saleProduct.name+"' does not exist");
-            result.withArray("saleProduct").add("Product '"+sale.saleProduct.name+"' does not exist");
+            result.put("message", "El producto '"+sale.saleProduct.name+"' no existe");
+            result.withArray("saleProduct").add("El producto '"+sale.saleProduct.name+"' no existe");
             return badRequest(result);
         }
         sale.saleProduct.id = null;
@@ -62,13 +62,13 @@ public class Sales {
             for (ProductSupply productSupply: product.productSupplies){
                 Supply supply = Supply.find.where().eq("name", productSupply.name).setMaxRows(1).findUnique();
                 if (supply == null){
-                    result.put("message", "Supply '"+productSupply.name+"' is part of the product and does not exist in stock");
-                    result.withArray("productSupplies").add("Supply '"+productSupply.name+"' is part of the product and does not exist in stock");
+                    result.put("message", "El insumo '"+productSupply.name+"' es parte del producto y no existe en stock");
+                    result.withArray("productSupplies").add("El insumo '"+productSupply.name+"' es parte del producto y no existe en stock");
                     return badRequest(result);
                 }
-                if (supply.quantity < productSupply.quantity){
-                    result.put("message", "Supply '"+productSupply.name+"' is part of the product and does not exist in stock");
-                    result.withArray("productSupplies").add("Supply '"+productSupply.name+"' is part of the product and does not exist in stock");
+                if (supply.quantity < (sale.saleProduct.quantity * productSupply.quantity)){
+                    result.put("message", "Se necesitan "+sale.saleProduct.quantity * productSupply.quantity+" unidades del insumo '"+productSupply.name+"' para el producto '"+product.name+"' y solo existen "+supply.quantity+" en stock");
+                    result.withArray("productSupplies").add("Se necesitan "+sale.saleProduct.quantity * productSupply.quantity+" unidades del insumo '"+productSupply.name+"' para el producto '"+product.name+"' y solo existen "+supply.quantity+" en stock");
                     return badRequest(result);
                 }
                 supply.quantity -= productSupply.quantity;
@@ -102,7 +102,7 @@ public class Sales {
         ObjectNode result = Json.newObject();
         Sale sale = Sale.find.byId(id);
         if (sale == null){
-            result.put("message", "Sale not found");
+            result.put("message", "No se encontró la venta");
             return badRequest(result);
         }
         result.put("sale", Json.toJson(sale));
@@ -134,7 +134,7 @@ public class Sales {
         ObjectNode result = Json.newObject();
         Sale sale = Sale.find.byId(id);
         if (sale == null){
-            result.put("message", "Sale not found");
+            result.put("message", "No se encontró la venta");
             return badRequest(result);
         }
         sale.delete();

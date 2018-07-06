@@ -31,7 +31,7 @@ public class Supply extends Model {
     @Constraints.Required
     @Column(nullable=false)
     public String name;    
-    @Constraints.Min(value=1, message = "The supply must be almost 1")
+    @Constraints.Min(value=1, message = "El insumo debe contener al menos una unidad como mínimo")
     @Column(nullable=false)
     public int quantity;
 

@@ -46,7 +46,7 @@ public class Supplies extends Controller {
         
         Supply supplyTable = Supply.find.where().eq("name", supply.name).setMaxRows(1).findUnique();
         if (supplyTable != null){
-            result.put("message", "The Supply name '"+supply.name+"' already exists");
+            result.put("message", "El nombre de insumo'"+supply.name+"' ya existe");
             return badRequest(result);
         }
         
@@ -66,7 +66,7 @@ public class Supplies extends Controller {
         ObjectNode result = Json.newObject();
         Supply supply = Supply.find.byId(id);
         if (supply == null){
-            result.put("message", "Supply not found");
+            result.put("message", "No se encontró el insumo");
             return badRequest(result);
         }
         result.put("supply", Json.toJson(supply));
@@ -85,7 +85,7 @@ public class Supplies extends Controller {
         ObjectNode result = Json.newObject();
         Supply supply = Supply.find.byId(id);
         if (supply == null){
-            result.put("message", "Supply not found");
+            result.put("message", "No se encontró el insumo");
             return badRequest(result);
         }
         Form<Supply> supplyForm = Form.form(Supply.class).bind(request().body().asJson());
@@ -96,7 +96,7 @@ public class Supplies extends Controller {
         supply.quantity = json.findPath("quantity").intValue();
         Supply supplyTable = Supply.find.where().eq("name", supply.name).ne("id", id).setMaxRows(1).findUnique();
         if (supplyTable != null){
-            result.put("message", "The Supply name '"+supply.name+"' already exists");
+            result.put("message", "El nombre de insumo'"+supply.name+"' ya existe");
             return badRequest(result);
         }
         supply.update();
@@ -114,7 +114,7 @@ public class Supplies extends Controller {
         ObjectNode result = Json.newObject();
         Supply supply = Supply.find.byId(id);
         if (supply == null){
-            result.put("message", "Supply not found");
+            result.put("message", "No se encontró el insumo");
             return badRequest(result);
         }
         supply.delete();

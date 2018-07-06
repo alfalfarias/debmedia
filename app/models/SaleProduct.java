@@ -38,9 +38,12 @@ public class SaleProduct extends Model {
     public String name;
     @Constraints.Required
     @Constraints.MaxLength(500)
-    public String description;
+    public String description;   
+    @Constraints.Min(value=1)
     @Column(nullable=false)
-    @Constraints.Min(value=1, message = "The product cant be free")
+    public int quantity;
+    @Column(nullable=false)
+    @Constraints.Min(value=1, message = "El producto no puede ser gratis")
     @Constraints.Required
     public Double price;
     
