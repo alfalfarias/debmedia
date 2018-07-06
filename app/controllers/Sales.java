@@ -66,14 +66,14 @@ public class Sales {
                     result.withArray("productSupplies").add("Supply '"+productSupply.name+"' is part of the product and does not exist in stock");
                     return badRequest(result);
                 }
-                if (supply.quantity <= productSupply.quantity){
+                if (supply.quantity < productSupply.quantity){
                     result.put("message", "Supply '"+productSupply.name+"' is part of the product and does not exist in stock");
                     result.withArray("productSupplies").add("Supply '"+productSupply.name+"' is part of the product and does not exist in stock");
                     return badRequest(result);
                 }
                 supply.quantity -= productSupply.quantity;
                 Ebean.save(supply);
-                SaleProductSupply saleProductSupply = new SaleProductSupply(null, supply.name, supply.quantity);
+                SaleProductSupply saleProductSupply = new SaleProductSupply(null, supply.name, 1);
                 sale.saleProduct.saleProductSupplies.add(saleProductSupply);
             }
             Ebean.save(sale);
