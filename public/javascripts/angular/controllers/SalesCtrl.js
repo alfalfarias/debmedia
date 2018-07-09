@@ -1,6 +1,6 @@
 /** Controllers */
 angular.module('app')
-.controller('SalesCtrl', function ($uibModal, salesService, toastr) {
+.controller('SalesCtrl', function ($uibModal, salesService, toastr, $window) {
     let vm = this;
 
     vm.loadSales = function () {
@@ -8,6 +8,10 @@ angular.module('app')
       .then(function (data) {
         vm.sales = data.sales; 
       });
+    };
+
+    vm.changeLocation = function(path){
+      $window.location.href = $window.location.origin + path;
     };
     
     vm.open = function () {
@@ -68,3 +72,4 @@ angular.module('app')
     $uibModalInstance.dismiss('cancel');
   };
 });
+

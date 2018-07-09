@@ -1,7 +1,7 @@
 angular.module('SuppliesService', [])
-.service('suppliesService', function($http){
+.service('suppliesService', function($http, $window){
 
-   this.url = 'http://localhost:9000/supplies';
+   this.url = $window.location.origin+'/supplies';
 
    this.loadSupplies = function() {
       return $http.get(this.url)

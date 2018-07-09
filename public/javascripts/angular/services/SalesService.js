@@ -1,7 +1,7 @@
 angular.module('SalesService', [])
-.service('salesService', function($http){
+.service('salesService', function($http, $window){
 
-	this.url = 'http://localhost:9000/sales';
+   this.url = $window.location.origin+'/sales';
 
    this.loadSales = function () {
    	return $http.get(this.url)

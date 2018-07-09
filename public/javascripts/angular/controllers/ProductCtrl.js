@@ -1,6 +1,6 @@
 /** Controllers */
 angular.module('app')
-.controller('ProductCtrl', function ($uibModal, productsService, toastr) {
+.controller('ProductCtrl', function ($uibModal, productsService, toastr, $window) {
     let vm = this;
 
     vm.loadProducts = function () {
@@ -8,6 +8,10 @@ angular.module('app')
       .then(function (data) {
         vm.products = data.products; 
       });
+    };
+
+    vm.changeLocation = function(path){
+      $window.location.href = $window.location.origin + path;
     };
     
     vm.open = function (product) {

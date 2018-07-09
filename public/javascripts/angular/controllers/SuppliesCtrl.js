@@ -1,6 +1,6 @@
 /** Controllers */
 angular.module('app')
-.controller('SuppliesCtrl', function ($uibModal, suppliesService, toastr) {
+.controller('SuppliesCtrl', function ($uibModal, suppliesService, toastr, $window) {
     let vm = this;
 
     vm.loadSupplies = function () {
@@ -8,6 +8,10 @@ angular.module('app')
       .then(function(data) {
         vm.supplies = data.supplies;
       });
+    };
+
+     vm.changeLocation = function(path){
+      $window.location.href = $window.location.origin + path;
     };
 
     vm.open = function (supplie) {
